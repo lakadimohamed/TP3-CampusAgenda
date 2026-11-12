@@ -7,11 +7,6 @@ import {
   FlatList,
 } from 'react-native';
 
-// =====================================
-// ÉTAPE 1 : DONNÉES ET CALCULS
-// =====================================
-
-// 1. Définition du type Evenement
 type Evenement = {
   id: string;
   titre: string;
@@ -20,7 +15,6 @@ type Evenement = {
   inscrits: number;
 };
 
-// 2. Tableau des événements
 const evenements: Evenement[] = [
   {
     id: 'E01',
@@ -66,12 +60,10 @@ const evenements: Evenement[] = [
   },
 ];
 
-// 3. Calculer les places restantes
 function placesRestantes(e: Evenement): number {
   return Math.max(0, e.capacite - e.inscrits);
 }
 
-// 4. Déterminer le statut de chaque événement
 type StatutEvenement =
   | 'Complet'
   | 'Presque complet'
@@ -89,7 +81,6 @@ function statutEvenement(e: Evenement): StatutEvenement {
   }
 }
 
-// 5. Calculer les indicateurs globaux
 const totalEvenements = evenements.length;
 
 const evenementsComplets = evenements.filter(
@@ -105,18 +96,12 @@ const totalPlacesRestantes = evenements.reduce(
   0
 );
 
-// 6. Préparer les ateliers disponibles
 const ateliersDisponibles = evenements.filter(
   e =>
     e.categorie === 'Atelier' &&
     placesRestantes(e) > 0
 );
 
-// =====================================
-// ÉTAPE 2 : COMPOSANTS RÉUTILISABLES
-// =====================================
-
-// 1. Composant BadgeEtat
 type BadgeEtatProps = {
   statut: StatutEvenement;
 };
@@ -139,7 +124,6 @@ function BadgeEtat({ statut }: BadgeEtatProps) {
   );
 }
 
-// 2. Composant CarteEvenement
 type CarteEvenementProps = {
   evenement: Evenement;
 };
@@ -169,7 +153,6 @@ function CarteEvenement({
   );
 }
 
-// 3. Composant BlocStatistique
 type BlocStatistiqueProps = {
   libelle: string;
   valeur: number;
@@ -192,35 +175,23 @@ function BlocStatistique({
   );
 }
 
-// =====================================
-// ÉTAPE 3 ET 4 : INTERFACE ET MODES
-// =====================================
-
-// Mode d'affichage : 'tous' ou 'ateliers'
 const mode: 'tous' | 'ateliers' = 'tous';
 
-// Titre selon le mode choisi
 const titreMode =
   mode === 'tous'
     ? 'Tous les événements'
     : 'Ateliers disponibles';
 
-// Liste des événements à afficher
 const evenementsAffiches =
   mode === 'tous'
     ? evenements
     : ateliersDisponibles;
-
-// =====================================
-// ÉTAPE 5 : APPLICATION ET FLATLIST
-// =====================================
 
 export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-      {/* En-tête */}
       <View style={styles.header}>
         <Text style={styles.titrePrincipal}>
           CampusAgenda
@@ -231,7 +202,6 @@ export default function App() {
         Événements du campus
       </Text>
 
-      {/* Statistiques */}
       <View style={styles.statistiques}>
         <BlocStatistique
           libelle="événements"
@@ -244,12 +214,10 @@ export default function App() {
         />
       </View>
 
-      {/* Titre du mode */}
       <Text style={styles.titreMode}>
         {titreMode}
       </Text>
 
-      {/* Liste des événements */}
       <FlatList
         data={evenementsAffiches}
         keyExtractor={(item) => item.id}
@@ -266,10 +234,6 @@ export default function App() {
     </View>
   );
 }
-
-// =====================================
-// STYLES DE L'APPLICATION
-// =====================================
 
 const styles = StyleSheet.create({
   container: {
